@@ -421,11 +421,18 @@ public class UsageStatsService extends SystemService implements
                 Slog.i(TAG, "Attempted to unlock stopped or removed user " + userId);
                 return;
             }
-
+            final long startTime = SystemClock.elapsedRealtime();
             // Process all the pending reported events
             while (pendingEvents.peek() != null) {
                 reportEvent(pendingEvents.poll(), userId);
+                if( (SystemClock.elapsedRealtime() - startTime) > 3000) {
+                    Slog.e(TAG, "Timeout for Process all the pending reported events.");
+                    break;
+                }
             }
+            final long totalTime = SystemClock.elapsedRealtime() - startTime;
+            Slog.i(TAG, "Process all the pending reported events completely. Took " + totalTime
+                   + " milliseconds");
             reportEvent(unlockEvent, userId);
 
             // Remove all the stats stored in memory and in system DE.
