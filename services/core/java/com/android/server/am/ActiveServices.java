@@ -5205,14 +5205,14 @@ public final class ActiveServices {
             final long maxTime =  now -
                     (psr.shouldExecServicesFg() ? SERVICE_TIMEOUT : SERVICE_BACKGROUND_TIMEOUT);
             ServiceRecord timeout = null;
-            long nextTime = 0;
+            long nextTime = Long.MAX_VALUE;
             for (int i = psr.numberOfExecutingServices() - 1; i >= 0; i--) {
                 ServiceRecord sr = psr.getExecutingServiceAt(i);
                 if (sr.executingStart < maxTime) {
                     timeout = sr;
                     break;
                 }
-                if (sr.executingStart > nextTime) {
+                if (sr.executingStart < nextTime) {
                     nextTime = sr.executingStart;
                 }
             }
