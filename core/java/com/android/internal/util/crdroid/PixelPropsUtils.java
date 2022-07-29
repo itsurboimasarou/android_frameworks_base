@@ -49,6 +49,7 @@ public class PixelPropsUtils {
             "com.google.android.gms",
 	    "com.google.android.as",
 	    "com.google.android.inputmethod.latin"
+	    "com.android.vending"
     };
 
     private static final String[] packagesToChangePixelXL = {
